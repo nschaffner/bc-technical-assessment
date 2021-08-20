@@ -21,7 +21,10 @@ function populateQuestions(obj) {
 
 async function postFormDataAsJson({ url, formData }) {
 	const plainFormData = Object.fromEntries(formData.entries());
-    const formDataJsonString = JSON.stringify(plainFormData);
+	const answerData = {
+		"answers": plainFormData
+	};
+	const formDataJsonString = JSON.stringify(answerData);
 
     const encoded = encodeURIComponent(formDataJsonString);
 	const decoded = decodeURIComponent(encoded);
