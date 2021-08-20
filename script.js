@@ -31,8 +31,8 @@ async function postFormDataAsJson({ url, formData }) {
 	const fetchOptions = {
 		method: "POST",
 		headers: {
-			"Content-Type": "application/json",
-			"Accept": "application/json",
+			"Content-Type": "application/x-www-form-urlencoded",
+			"Accept": "application/x-www-form-urlencoded",
 		},
 		body: encoded,
 	};
