@@ -18,3 +18,53 @@ function populateQuestions(obj) {
         document.getElementById(numQuest).innerHTML = 'Question ' + numQuestions[i].id + ': ' + numQuestions[i].question;
     }
 }
+
+async function postFormDataAsJson({ url, formData }) {
+	const plainFormData = Object.fromEntries(formData.entries());
+	const answerData = {
+		"answers": plainFormData
+	};
+	const formDataJsonString = JSON.stringify(answerData);
+
+    const encoded = encodeURIComponent(formDataJsonString);
+	const decoded = decodeURIComponent(encoded);
+	console.log(formDataJsonString);
+	console.log(decoded);
+
+	const fetchOptions = {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded",
+			"Accept": "application/x-www-form-urlencoded",
+		},
+		body: encoded,
+	};
+
+	const response = await fetch(url, fetchOptions);
+
+	if (!response.ok) {
+		const errorMessage = await response.text();
+		throw new Error(errorMessage);
+	}
+
+	return response.json();
+}
+
+async function handleFormSubmit(event) {
+	event.preventDefault();
+
+	const form = event.currentTarget;
+	const url = form.action;
+
+	try {
+		const formData = new FormData(form);
+		const responseData = await postFormDataAsJson({ url, formData });
+
+		console.log({ responseData });
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+const exampleForm = document.getElementById("answers");
+exampleForm.addEventListener("submit", handleFormSubmit);
